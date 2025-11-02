@@ -1,10 +1,11 @@
 "use client";
+
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Menu as MenuIcon, X as XIcon, ChevronDown } from "lucide-react";
-import Image from 'next/image'
-import img from '@/public/images/products/logowithText.png'
+import Image from "next/image";
+import img from "@/public/images/products/logowithText.png";
 
 type Child = { name: string; href: string };
 type NavItem = { name: string; href?: string; children?: Child[] };
@@ -30,47 +31,46 @@ export default function Navbar() {
   const [mobileAccordionIndex, setMobileAccordionIndex] = useState<number | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
 
-  // 🟢 Fetch categories from Django
-   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/categories/")
-      .then((res) => res.json())
-      .then((data) => {
-        // Add "All" at the beginning
+  // Fetch categories from API (client-only)
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+        const res = await fetch(`${apiUrl}/api/categories/`);
+        const data = await res.json();
         const categoryNames = ["All", ...data.map((cat: any) => cat.name)];
         setCategories(categoryNames);
-      })
-      .catch((err) => console.error("Error fetching categories:", err));
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+        setCategories(["All"]); // fallback
+      }
+    };
+
+    fetchCategories();
   }, []);
 
-  // refs
   const dropdownRefs = useRef<Record<number, HTMLDivElement | null>>({});
-  const closeTimeout = useRef<Record<number, number | null>>({});
+  const closeTimeout = useRef<Record<number, NodeJS.Timeout | null>>({});
 
-  // helper: open
   const openAt = (idx: number) => {
-    // clear any pending close timeout for this idx
     if (closeTimeout.current[idx]) {
-      window.clearTimeout(closeTimeout.current[idx]!);
+      clearTimeout(closeTimeout.current[idx]!);
       closeTimeout.current[idx] = null;
     }
     setOpenDropdownIndex(idx);
   };
 
-  // helper: schedule close with small delay
   const scheduleCloseAt = (idx: number, delay = 150) => {
-    // clear existing
     if (closeTimeout.current[idx]) {
-      window.clearTimeout(closeTimeout.current[idx]!);
+      clearTimeout(closeTimeout.current[idx]!);
       closeTimeout.current[idx] = null;
     }
-    closeTimeout.current[idx] = window.setTimeout(() => {
-      // only close if still the same index open
+    closeTimeout.current[idx] = setTimeout(() => {
       setOpenDropdownIndex((cur) => (cur === idx ? null : cur));
       closeTimeout.current[idx] = null;
     }, delay);
   };
 
-  // global: close on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -84,20 +84,15 @@ export default function Navbar() {
   }, []);
 
   return (
-    <motion.nav 
-      initial={{ y: -100, opacity: 0 }} // start above the screen, invisible
-      animate={{ y: 0, opacity: 1 }}    // slide down to position
+    <motion.nav
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="fixed top-0 left-0 w-full bg-white  shadow z-50">
+      className="fixed top-0 left-0 w-full bg-white shadow z-50"
+    >
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
         <Link href="/" className="text-2xl font-extrabold text-indigo-600">
-          <Image  
-             src={img.src}  // Path to image
-             alt="Site logo"   // Accessible text
-             width={200}       // Image width (required)
-             height={200} />
-
-          
+          <Image src={img.src} alt="Site logo" width={200} height={200} />
         </Link>
 
         {/* Desktop menu */}
@@ -107,14 +102,9 @@ export default function Navbar() {
               <div
                 key={item.name}
                 className="relative"
-                // TS-safe ref callback: block body returns void
-                ref={(el) => {
-                  dropdownRefs.current[idx] = el;
-                }}
                 onMouseEnter={() => openAt(idx)}
                 onMouseLeave={() => scheduleCloseAt(idx, 150)}
               >
-                {/* trigger button */}
                 <button
                   className="inline-flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-medium transition"
                   aria-haspopup="true"
@@ -128,19 +118,18 @@ export default function Navbar() {
                   />
                 </button>
 
-                {/* dropdown - also listens for mouse enter to cancel close */}
+                {/* Dropdown */}
                 <div
                   role="menu"
                   aria-label={`${item.name} submenu`}
-                  onMouseEnter={() => openAt(idx)} // cancel closing when hovering over dropdown itself
+                  onMouseEnter={() => openAt(idx)}
                   onMouseLeave={() => scheduleCloseAt(idx, 150)}
                   className={`absolute right-0 mt-3 w-56 rounded-2xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 origin-top-right transition-all duration-150 z-50
                     ${openDropdownIndex === idx ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"}`}
-                  // note: pointer-events-none only when hidden; when visible pointer-events-auto
                 >
                   <div className="py-2">
                     {categories.map((cat) => (
-                      <Link 
+                      <Link
                         key={cat}
                         href={`/category/${encodeURIComponent(cat)}`}
                         onClick={() => setOpenDropdownIndex(null)}
@@ -174,7 +163,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile menu (unchanged, accordion for Products) */}
+      {/* Mobile menu */}
       <div className={`md:hidden bg-white shadow-md ${mobileOpen ? "block" : "hidden"}`}>
         <div className="px-4 pt-4 pb-6">
           <ul className="space-y-3">
