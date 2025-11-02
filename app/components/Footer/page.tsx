@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* About Section */}
         <div>
-          <h3 className="text-xl font-bold mb-4">Solid Core Engineering</h3>
+          <h3 className="text-xl font-bold mb-4">SolidCore Engineering</h3>
           <p className="text-gray-400 text-sm">
             Providing high-quality engineering products and solutions with innovation, precision, and reliability.
           </p>
@@ -55,14 +55,14 @@ export default function Footer() {
         <div>
           <h4 className="text-lg font-semibold mb-4">Contact</h4>
           <p className="text-gray-400 text-sm">123 Industrial Street, City, Country</p>
-          <p className="text-gray-400 text-sm mt-1">Email: info@mybrandengineering.com</p>
+          <p className="text-gray-400 text-sm mt-1">Email: info@SolidCoreengineering.com</p>
           <p className="text-gray-400 text-sm mt-1">Phone: +123 456 7890</p>
         </div>
       </div>
 
       {/* Bottom */}
       <div className="mt-12 border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
-        &copy; {new Date().getFullYear()} MyBrand Engineering. All rights reserved.
+        &copy; {new Date().getFullYear()} SolidCore Engineering. All rights reserved.
       </div>
     </footer>
   );

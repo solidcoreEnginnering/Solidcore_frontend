@@ -42,7 +42,7 @@ export default function HomePage() {
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
           <Link
-            href="/products"
+            href="/components/ProductPage"
             className="bg-white text-indigo-600 font-semibold px-6 py-3 rounded-full shadow-md hover:scale-105 hover:bg-indigo-50 transition-transform duration-200"
           >
             Explore Products
@@ -55,7 +55,7 @@ export default function HomePage() {
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
           <Link
-            href="/contact"
+            href="/components/contact"
             className="bg-transparent border border-white font-semibold px-6 py-3 rounded-full hover:bg-white hover:text-indigo-600 transition-all duration-200"
           >
             Contact Us
