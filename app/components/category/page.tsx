@@ -36,7 +36,7 @@ export default function Productlist() {
   }, [selectedCategory]);
 
   return (
-    <main className="p-8">
+    <main >
      
 
      

@@ -1,9 +1,25 @@
 "use client";
-
 import React from "react";
-import { MapContainer, TileLayer, GeoJSON, Marker, Tooltip, useMap } from "react-leaflet";
-import L, { LatLngTuple } from "leaflet";
+
 import "leaflet/dist/leaflet.css";
+import dynamic from "next/dynamic";
+import { useMap } from "react-leaflet";
+import type { LatLngTuple } from "leaflet";
+
+
+let L: any;
+if (typeof window !== "undefined") {
+  L = require("leaflet");
+}
+
+
+/* Replace react-leaflet imports */
+const MapContainer = dynamic(() => import("react-leaflet").then(m => m.MapContainer), { ssr: false });
+const TileLayer = dynamic(() => import("react-leaflet").then(m => m.TileLayer), { ssr: false });
+const GeoJSON = dynamic(() => import("react-leaflet").then(m => m.GeoJSON), { ssr: false });
+const Marker = dynamic(() => import("react-leaflet").then(m => m.Marker), { ssr: false });
+const Tooltip = dynamic(() => import("react-leaflet").then(m => m.Tooltip), { ssr: false });
+
 
 /* --- Country data --- */
 const countries: { name: string; geoUrl: string; center: LatLngTuple }[] = [
@@ -38,6 +54,8 @@ function CountryLayersInjector({ layers }: { layers: L.Layer[] }) {
 
 /* --- Custom blue marker icon --- */
 function createIcon(color = "#3b82f6") {
+  if (!L) return undefined; // ✅ Prevent calling before Leaflet is ready
+
   return L.divIcon({
     className: "custom-div-icon",
     html: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="30" viewBox="0 0 24 36" fill="${color}" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
