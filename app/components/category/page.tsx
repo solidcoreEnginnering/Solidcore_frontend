@@ -2,77 +2,193 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-// Simple ProductsSection component using <img>
-const ProductsSection = ({ product }: { product: any }) => {
+// Professional ProductCard component
+const ProductCard = ({ product }: { product: any }) => {
   return (
-    <div className="bg-white shadow-lg rounded-2xl p-6 flex flex-col items-center">
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-full h-64 object-cover rounded-xl mb-4"
-      />
-      <h3 className="text-lg font-semibold text-gray-800 mb-2">{product.name}</h3>
-      <p className="text-indigo-600 font-bold mb-2">${product.price.toFixed(2)}</p>
-      <p className="text-gray-500 text-sm">{product.category}</p>
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-white border border-gray-200 hover:border-gray-300 transition-all duration-300 group overflow-hidden"
+    >
+      <div className="relative overflow-hidden bg-gray-50">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute top-4 right-4 bg-white px-3 py-1 text-xs font-semibold text-gray-700 shadow-sm">
+          {product.category}
+        </div>
+      </div>
+      <div className="p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+          {product.name}
+        </h3>
+        <p className="text-sm text-gray-500 mb-4 line-clamp-2">{product.description}</p>
+        <div className="flex items-center justify-between">
+          <span className="text-2xl font-bold text-gray-900">
+            ${product.price.toFixed(2)}
+          </span>
+          <button className="bg-gray-900 text-white px-6 py-2 text-sm font-medium hover:bg-gray-800 transition-colors duration-200">
+            Inquire
+          </button>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
 export default function Productlist() {
-  // Categories
-  const sampleCategories = ["All", "Electronics", "Kitchen", "Fitness", "Books", "Home Decor"];
-  const [categories] = useState<string[]>(sampleCategories);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  // Categories for metalwork products
+  const industrialCategories = [
+    "All Products",
+    "Furniture",
+    "Blades & Cutting",
+    "Industrial Parts",
+    "Piping & Fittings",
+    "Engineering Components",
+  ];
 
-  // Placeholder image for all products
-  const placeholderImage =
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeFkRea-GyeWjSlr88zwu0ngFchRigG276wg&s";
+  const [categories] = useState<string[]>(industrialCategories);
+  const [selectedCategory, setSelectedCategory] = useState("All Products");
 
-  // Sample products
-  const sampleProducts = [
-    { id: 1, name: "Stainless Steel Knife Set", category: "Kitchen", price: 59.99, image: placeholderImage },
-    { id: 2, name: "Yoga Mat with Carry Strap", category: "Fitness", price: 29.99, image: placeholderImage },
-    { id: 3, name: "Bluetooth Over-Ear Headphones", category: "Electronics", price: 99.99, image: placeholderImage },
-    { id: 4, name: "Non-Stick Cookware Set", category: "Kitchen", price: 149.99, image: placeholderImage },
-    { id: 5, name: "Modern Table Lamp", category: "Home Decor", price: 45.99, image: placeholderImage },
-    { id: 6, name: "Best-Selling Programming Book", category: "Books", price: 39.99, image: placeholderImage },
-    { id: 7, name: "Adjustable Dumbbells", category: "Fitness", price: 199.99, image: placeholderImage },
-    { id: 8, name: "Smartphone Wireless Charger", category: "Electronics", price: 25.99, image: placeholderImage },
-    { id: 9, name: "Ceramic Vase Set", category: "Home Decor", price: 59.99, image: placeholderImage },
+  // Professional metalwork products with relevant images
+  const metalworkProducts = [
+    {
+      id: 1,
+      name: "Industrial Metal Chair Set",
+      category: "Furniture",
+      price: 299.99,
+      description: "Powder-coated steel frame with ergonomic design for commercial use",
+      image: "https://images.unsplash.com/photo-1503602642458-232111445657?w=800&q=80",
+    },
+    {
+      id: 2,
+      name: "Custom Metal Table Base",
+      category: "Furniture",
+      price: 449.99,
+      description: "Heavy-duty stainless steel base, suitable for restaurant and office use",
+      image: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=800&q=80",
+    },
+    {
+      id: 3,
+      name: "Precision Cutting Blades",
+      category: "Blades & Cutting",
+      price: 189.99,
+      description: "High-carbon steel blades for industrial cutting applications",
+      image: "https://images.unsplash.com/photo-1599696848652-f00a6ebfb45c?w=800&q=80",
+    },
+    {
+      id: 4,
+      name: "Marine Propeller - 4 Blade",
+      category: "Industrial Parts",
+      price: 1299.99,
+      description: "Corrosion-resistant stainless steel marine propeller, custom sizing available",
+      image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80",
+    },
+    {
+      id: 5,
+      name: "Industrial Pulley System",
+      category: "Engineering Components",
+      price: 349.99,
+      description: "Cast iron construction with sealed bearings, 500kg load capacity",
+      image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&q=80",
+    },
+    {
+      id: 6,
+      name: "Stainless Steel Piping Kit",
+      category: "Piping & Fittings",
+      price: 599.99,
+      description: "304 stainless steel pipes and fittings for industrial applications",
+      image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=800&q=80",
+    },
+    {
+      id: 7,
+      name: "Custom Metal Blade Set",
+      category: "Blades & Cutting",
+      price: 429.99,
+      description: "CNC-machined blades with precision edges for specialized cutting tasks",
+      image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=800&q=80",
+    },
+    {
+      id: 8,
+      name: "Heavy-Duty Pipe Flanges",
+      category: "Piping & Fittings",
+      price: 279.99,
+      description: "Carbon steel flanges with ANSI specifications, various sizes available",
+      image: "https://images.unsplash.com/photo-1513828583688-c52646db42da?w=800&q=80",
+    },
+    {
+      id: 9,
+      name: "Precision Gear Assembly",
+      category: "Engineering Components",
+      price: 549.99,
+      description: "CNC-machined steel gears for mechanical engineering applications",
+      image: "https://images.unsplash.com/photo-1581092162384-8987c1d64718?w=800&q=80",
+    },
+    {
+      id: 10,
+      name: "Industrial Metal Shelving",
+      category: "Furniture",
+      price: 389.99,
+      description: "Powder-coated steel shelving system, adjustable and modular design",
+      image: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800&q=80",
+    },
+    {
+      id: 11,
+      name: "Aircraft Propeller Blade",
+      category: "Industrial Parts",
+      price: 2499.99,
+      description: "Aerospace-grade aluminum alloy, precision balanced for aviation use",
+      image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80",
+    },
+    {
+      id: 12,
+      name: "Industrial Valve System",
+      category: "Piping & Fittings",
+      price: 459.99,
+      description: "Brass and stainless steel valves for high-pressure industrial systems",
+      image: "https://images.unsplash.com/photo-1581092162384-8987c1d64718?w=800&q=80",
+    },
   ];
 
   // Filter products by category
-  const products =
-    selectedCategory === "All"
-      ? sampleProducts
-      : sampleProducts.filter((p) => p.category === selectedCategory);
+  const filteredProducts =
+    selectedCategory === "All Products"
+      ? metalworkProducts
+      : metalworkProducts.filter((p) => p.category === selectedCategory);
 
   return (
-    <main className="p-8">
-      <section className="relative z-10 w-full bg-white text-gray-800 py-20 px-6 md:px-12">
-        <div className="max-w-6xl mx-auto text-center mb-12">
-          <motion.h2
-            initial={{ y: -100, opacity: 0 }}
+    <main className="min-h-screen bg-gray-50">
+      {/* Header Section */}
+      <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ y: -30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="text-4xl font-bold text-indigo-600 mb-4"
+            transition={{ duration: 0.8 }}
+            className="text-center"
           >
-            Featured Products
-          </motion.h2>
-          <p className="text-gray-500 max-w-2xl mx-auto">
-            Discover our best-selling premium products made with stainless steel, carbon steel, and high-quality materials.
-          </p>
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight">
+              Precision Metal Products
+            </h1>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Industrial-grade metalwork solutions including custom furniture, blades, 
+              propellers, piping systems, and engineering components
+            </p>
+          </motion.div>
         </div>
+      </section>
 
+      {/* Filter and Products Section */}
+      <section className="max-w-7xl mx-auto px-6 py-12">
         {/* Category Filter */}
-        <div className="mb-8 flex flex-col sm:flex-row items-center justify-center gap-4 p-6 bg-white shadow-lg rounded-2xl border border-gray-100">
-          <label
-            htmlFor="category"
-            className="text-lg font-semibold text-gray-800 flex items-center gap-2"
-          >
+        <div className="mb-12 flex flex-col sm:flex-row items-center justify-between gap-6 bg-white p-6 shadow-sm border border-gray-200">
+          <div className="flex items-center gap-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-indigo-600"
+              className="h-6 w-6 text-gray-700"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -81,18 +197,20 @@ export default function Productlist() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2H3V4zm0 6h18v10a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"
+                d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
-            Filter by Category:
-          </label>
+            <span className="text-lg font-semibold text-gray-900">
+              Filter by Category
+            </span>
+          </div>
 
-          <div className="relative w-60">
+          <div className="relative min-w-[280px]">
             <select
               id="category"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="appearance-none w-full bg-white border border-gray-300 text-gray-700 text-base rounded-lg px-4 py-2.5 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer transition-all duration-200"
+              className="appearance-none w-full bg-white border-2 border-gray-300 text-gray-900 font-medium rounded px-4 py-3 focus:outline-none focus:border-gray-900 cursor-pointer transition-all duration-200"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
@@ -100,11 +218,10 @@ export default function Productlist() {
                 </option>
               ))}
             </select>
-
-            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+            <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-600">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -118,14 +235,25 @@ export default function Productlist() {
           </div>
         </div>
 
-        {/* Product List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-          {products.length > 0 ? (
-            products.map((product: any) => (
-              <ProductsSection key={product.id} product={product} />
+        {/* Results Count */}
+        <div className="mb-6 text-gray-600">
+          <p className="text-sm font-medium">
+            Showing {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
+          </p>
+        </div>
+
+        {/* Product Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
             ))
           ) : (
-            <p>No products found for this category.</p>
+            <div className="col-span-full text-center py-16">
+              <p className="text-gray-500 text-lg">
+                No products found in this category.
+              </p>
+            </div>
           )}
         </div>
       </section>
